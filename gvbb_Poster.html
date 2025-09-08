@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUXE - Animated Fashion Poster</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>LUXE - Ultra Dynamic Fashion Poster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@100;300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,32 +18,143 @@
             background: #000;
             height: 100vh;
             width: 100vw;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
         }
 
         .poster-container {
             position: relative;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 35%, #0f0f23 100%);
+            overflow: hidden;
         }
 
-        /* Background Video Effect */
-        .bg-overlay {
+        /* Advanced Background Effects */
+        .bg-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            animation: floatParticle 15s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .bg-gradient-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-                linear-gradient(45deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
-            animation: bgShimmer 8s ease-in-out infinite;
+                conic-gradient(from 0deg at 50% 50%, 
+                    rgba(255, 215, 0, 0.1) 0deg,
+                    rgba(138, 43, 226, 0.1) 60deg,
+                    rgba(255, 20, 147, 0.1) 120deg,
+                    rgba(0, 191, 255, 0.1) 180deg,
+                    rgba(50, 205, 50, 0.1) 240deg,
+                    rgba(255, 215, 0, 0.1) 300deg,
+                    rgba(255, 215, 0, 0.1) 360deg);
+            animation: rotateGradient 20s linear infinite;
+            opacity: 0.3;
         }
 
-        @keyframes bgShimmer {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .geometric-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            animation: morphShape 12s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 80%;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 70%;
+            left: 10%;
+            transform: rotate(45deg);
+            animation-delay: -4s;
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 300px;
+            top: 20%;
+            left: 5%;
+            border-radius: 50px;
+            animation-delay: -8s;
+        }
+
+        @keyframes morphShape {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.3;
+            }
+            33% {
+                transform: scale(1.2) rotate(120deg);
+                opacity: 0.6;
+            }
+            66% {
+                transform: scale(0.8) rotate(240deg);
+                opacity: 0.4;
+            }
         }
 
         /* Page Styles */
@@ -58,118 +169,273 @@
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transform: translateX(100%);
-            transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateZ(0);
+            transition: all 2s cubic-bezier(0.23, 1, 0.32, 1);
+            perspective: 1000px;
         }
 
         .page.active {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateZ(0);
         }
 
-        .page.exit {
+        .page.exit-left {
             opacity: 0;
-            transform: translateX(-100%);
+            transform: translateX(-100%) rotateY(-15deg);
         }
 
-        /* Hero Page */
+        .page.exit-right {
+            opacity: 0;
+            transform: translateX(100%) rotateY(15deg);
+        }
+
+        .page.enter-left {
+            opacity: 0;
+            transform: translateX(-100%) rotateY(15deg);
+        }
+
+        .page.enter-right {
+            opacity: 0;
+            transform: translateX(100%) rotateY(-15deg);
+        }
+
+        /* Hero Page - Ultra Dynamic */
         .hero-page {
             text-align: center;
             color: white;
+            position: relative;
+        }
+
+        .hero-background-text {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: 20vw;
+            font-weight: 900;
+            color: rgba(255, 215, 0, 0.03);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            animation: backgroundTextFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes backgroundTextFloat {
+            0%, 100% { transform: translate(-50%, -50%) rotate(-2deg); }
+            50% { transform: translate(-50%, -50%) rotate(2deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
         }
 
         .hero-logo {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(4rem, 12vw, 8rem);
+            font-size: clamp(4rem, 15vw, 12rem);
             font-weight: 900;
-            letter-spacing: 0.2em;
-            background: linear-gradient(135deg, #FFD700 0%, #FFF 50%, #FFD700 100%);
+            letter-spacing: 0.3em;
+            background: linear-gradient(135deg, 
+                #FFD700 0%, 
+                #FFF 25%, 
+                #FFD700 50%, 
+                #FF6B6B 75%, 
+                #FFD700 100%);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 2rem;
-            animation: logoGlow 3s ease-in-out infinite;
+            animation: logoAnimation 4s ease-in-out infinite, gradientShift 8s ease-in-out infinite;
             position: relative;
+            text-shadow: 0 0 60px rgba(255, 215, 0, 0.5);
         }
 
-        .hero-logo::after {
-            content: '';
+        .hero-logo::before {
+            content: 'LUXE';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            animation: haloEffect 4s ease-in-out infinite;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 215, 0, 0.1) 50%, transparent 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmerEffect 3s ease-in-out infinite;
         }
 
-        @keyframes logoGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-            50% { text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.4); }
+        @keyframes logoAnimation {
+            0%, 100% { 
+                transform: scale(1) rotateX(0deg);
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+            }
+            50% { 
+                transform: scale(1.05) rotateX(5deg);
+                filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.6));
+            }
         }
 
-        @keyframes haloEffect {
-            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes shimmerEffect {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .hero-tagline {
-            font-family: 'Inter', sans-serif;
-            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 4vw, 3rem);
             font-weight: 300;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.5em;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 3rem;
-            animation: fadeInUp 2s ease-out 0.5s both;
+            margin-bottom: 1rem;
+            animation: taglineFloat 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .hero-tagline::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            transform: translateX(-50%);
+            animation: lineExpand 2s ease-in-out infinite;
+        }
+
+        @keyframes taglineFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes lineExpand {
+            0%, 100% { width: 50px; opacity: 0.5; }
+            50% { width: 150px; opacity: 1; }
         }
 
         .hero-subtitle {
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
-            font-weight: 400;
+            font-size: clamp(1rem, 2.5vw, 1.8rem);
+            font-weight: 100;
             color: rgba(255, 215, 0, 0.8);
-            letter-spacing: 0.2em;
-            animation: fadeInUp 2s ease-out 1s both;
+            letter-spacing: 0.3em;
+            animation: subtitleGlow 4s ease-in-out infinite;
+            margin-top: 2rem;
         }
 
-        /* Content Page */
+        @keyframes subtitleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+            50% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4); }
+        }
+
+        /* Content Page - Ultra Elegant */
         .content-page {
             padding: 2rem;
             color: white;
+            position: relative;
+        }
+
+        .content-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 20, 147, 0.1) 0%, transparent 50%);
+            animation: backgroundPulse 10s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
         }
 
         .content-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 700;
             text-align: center;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, #FFD700 0%, #FFF 100%);
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, 
+                #FFD700 0%, 
+                #FFF 30%, 
+                #FF6B6B 60%, 
+                #FFD700 100%);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: slideInFromTop 1.5s ease-out;
+            animation: titleAnimation 2s ease-out, gradientFlow 6s ease-in-out infinite;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes titleAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) rotateX(-90deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .collections-container {
+            position: relative;
+            z-index: 10;
         }
 
         .collections-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            perspective: 1000px;
         }
 
         .collection-item {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 20px;
-            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 25px;
+            padding: 2.5rem;
             text-align: center;
-            transform: translateY(50px);
+            transform: translateY(100px) rotateX(45deg);
             opacity: 0;
-            animation: slideInUp 1s ease-out forwards;
+            animation: cardEntrance 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .collection-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: cardShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes cardShimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .collection-item:nth-child(1) { animation-delay: 0.2s; }
@@ -177,64 +443,104 @@
         .collection-item:nth-child(3) { animation-delay: 0.6s; }
         .collection-item:nth-child(4) { animation-delay: 0.8s; }
 
+        .collection-item:hover {
+            transform: translateY(-10px) rotateX(0deg) scale(1.02);
+            border-color: rgba(255, 215, 0, 0.6);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.2);
+        }
+
+        @keyframes cardEntrance {
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
         .collection-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
             display: block;
-            animation: float 3s ease-in-out infinite;
+            animation: iconFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
         }
 
         .collection-item:nth-child(even) .collection-icon {
-            animation-delay: -1.5s;
+            animation-delay: -2s;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+            33% { 
+                transform: translateY(-15px) rotate(5deg) scale(1.1);
+            }
+            66% { 
+                transform: translateY(-5px) rotate(-3deg) scale(0.95);
+            }
         }
 
         .collection-name {
             font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #FFD700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FFD700 0%, #FFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: nameGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes nameGlow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)); }
         }
 
         .collection-desc {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            font-weight: 300;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Advanced Transition System */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, 
+                    transparent 0%, 
+                    rgba(255, 215, 0, 0.1) 25%,
+                    rgba(138, 43, 226, 0.1) 50%,
+                    rgba(255, 215, 0, 0.1) 75%,
+                    transparent 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+            transform: translateX(-100%) skewX(-15deg);
         }
 
-        @keyframes slideInFromTop {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .transition-overlay.active {
+            animation: advancedTransition 2s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        @keyframes slideInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        @keyframes advancedTransition {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-100%) skewX(-15deg) scale(0.8);
             }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { 
+                opacity: 1; 
+                transform: translateX(0%) skewX(0deg) scale(1);
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateX(100%) skewX(15deg) scale(0.8);
+            }
         }
 
         /* Responsive Design */
@@ -247,11 +553,15 @@
             .content-page {
                 padding: 1rem;
             }
+
+            .hero-logo {
+                font-size: clamp(3rem, 12vw, 8rem);
+            }
         }
 
         @media (orientation: portrait) {
             .hero-logo {
-                font-size: clamp(3rem, 15vw, 6rem);
+                font-size: clamp(3rem, 18vw, 10rem);
             }
             
             .collections-grid {
@@ -259,120 +569,193 @@
             }
         }
 
-        /* Cinematic Transition Effects */
-        .transition-overlay {
+        /* Loading Animation */
+        .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent 0%, rgba(255, 215, 0, 0.1) 50%, transparent 100%);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1000;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeOut 2s ease-in-out 3s forwards;
         }
 
-        .transition-overlay.active {
-            animation: sweepTransition 1.5s ease-in-out;
+        .loading-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #FFD700;
+            animation: loadingPulse 1.5s ease-in-out infinite;
         }
 
-        @keyframes sweepTransition {
-            0% { opacity: 0; transform: translateX(-100%); }
-            50% { opacity: 1; transform: translateX(0); }
-            100% { opacity: 0; transform: translateX(100%); }
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; pointer-events: none; }
         }
     </style>
 </head>
 <body>
+    <div class="loading-screen">
+        <div class="loading-text">LUXE</div>
+    </div>
+
+    <div class="custom-cursor"></div>
+
     <div class="poster-container">
-        <div class="bg-overlay"></div>
+        <div class="bg-particles"></div>
+        <div class="bg-gradient-overlay"></div>
+        <div class="geometric-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
         <div class="transition-overlay"></div>
         
         <!-- Hero Page -->
         <div class="page hero-page active" id="heroPage">
-            <div class="hero-logo">LUXE</div>
-            <div class="hero-tagline">HAUTE COUTURE</div>
-            <div class="hero-subtitle">TIMELESS ELEGANCE</div>
+            <div class="hero-background-text">FASHION</div>
+            <div class="hero-content">
+                <div class="hero-logo">LUXE</div>
+                <div class="hero-tagline">HAUTE COUTURE</div>
+                <div class="hero-subtitle">TIMELESS ELEGANCE REDEFINED</div>
+            </div>
         </div>
         
         <!-- Content Page -->
         <div class="page content-page" id="contentPage">
-            <h2 class="content-title">COLLECTIONS</h2>
-            <div class="collections-grid">
-                <div class="collection-item">
-                    <span class="collection-icon">👗</span>
-                    <h3 class="collection-name">Evening Wear</h3>
-                    <p class="collection-desc">Exquisite gowns and cocktail dresses crafted for unforgettable moments</p>
-                </div>
-                <div class="collection-item">
-                    <span class="collection-icon">👔</span>
-                    <h3 class="collection-name">Business Elite</h3>
-                    <p class="collection-desc">Sophisticated suits and professional attire for the modern executive</p>
-                </div>
-                <div class="collection-item">
-                    <span class="collection-icon">👜</span>
-                    <h3 class="collection-name">Accessories</h3>
-                    <p class="collection-desc">Luxury handbags, jewelry, and accessories to complete your look</p>
-                </div>
-                <div class="collection-item">
-                    <span class="collection-icon">👠</span>
-                    <h3 class="collection-name">Footwear</h3>
-                    <p class="collection-desc">Designer shoes and boots crafted with premium materials</p>
+            <div class="content-background"></div>
+            <div class="collections-container">
+                <h2 class="content-title">COLLECTIONS</h2>
+                <div class="collections-grid">
+                    <div class="collection-item">
+                        <span class="collection-icon">👗</span>
+                        <h3 class="collection-name">Evening Wear</h3>
+                        <p class="collection-desc">Exquisite gowns and cocktail dresses crafted for unforgettable moments of pure elegance</p>
+                    </div>
+                    <div class="collection-item">
+                        <span class="collection-icon">👔</span>
+                        <h3 class="collection-name">Business Elite</h3>
+                        <p class="collection-desc">Sophisticated suits and professional attire for the modern executive who demands perfection</p>
+                    </div>
+                    <div class="collection-item">
+                        <span class="collection-icon">👜</span>
+                        <h3 class="collection-name">Accessories</h3>
+                        <p class="collection-desc">Luxury handbags, jewelry, and accessories to complete your distinctive look</p>
+                    </div>
+                    <div class="collection-item">
+                        <span class="collection-icon">👠</span>
+                        <h3 class="collection-name">Footwear</h3>
+                        <p class="collection-desc">Designer shoes and boots crafted with premium materials and uncompromising attention to detail</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        class AnimatedPoster {
+        class UltraDynamicPoster {
             constructor() {
                 this.currentPage = 0;
                 this.pages = ['heroPage', 'contentPage'];
-                this.transitionDuration = 5000; // 5 seconds
+                this.transitionDuration = 6000; // 6 seconds
+                this.isTransitioning = false;
                 this.init();
             }
 
             init() {
+                this.createParticles();
+                this.setupCustomCursor();
                 this.startAutoRotation();
                 this.addVisibilityListener();
+                this.addInteractiveEffects();
+            }
+
+            createParticles() {
+                const particleContainer = document.querySelector('.bg-particles');
+                const particleCount = 50;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    const size = Math.random() * 4 + 1;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    
+                    particleContainer.appendChild(particle);
+                }
+            }
+
+            setupCustomCursor() {
+                const cursor = document.querySelector('.custom-cursor');
+                
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = e.clientX - 10 + 'px';
+                    cursor.style.top = e.clientY - 10 + 'px';
+                });
+
+                document.addEventListener('mousedown', () => {
+                    cursor.style.transform = 'scale(1.5)';
+                });
+
+                document.addEventListener('mouseup', () => {
+                    cursor.style.transform = 'scale(1)';
+                });
             }
 
             startAutoRotation() {
                 this.rotationInterval = setInterval(() => {
-                    this.nextPage();
+                    if (!this.isTransitioning) {
+                        this.nextPage();
+                    }
                 }, this.transitionDuration);
             }
 
             nextPage() {
+                if (this.isTransitioning) return;
+                
+                this.isTransitioning = true;
                 const currentPageElement = document.getElementById(this.pages[this.currentPage]);
                 const transitionOverlay = document.querySelector('.transition-overlay');
                 
-                // Add transition overlay effect
+                // Advanced transition effect
                 transitionOverlay.classList.add('active');
                 
-                // Start page transition after a short delay
                 setTimeout(() => {
+                    // Exit current page with 3D effect
                     currentPageElement.classList.remove('active');
-                    currentPageElement.classList.add('exit');
+                    currentPageElement.classList.add(Math.random() > 0.5 ? 'exit-left' : 'exit-right');
                     
                     // Move to next page
                     this.currentPage = (this.currentPage + 1) % this.pages.length;
                     const nextPageElement = document.getElementById(this.pages[this.currentPage]);
                     
                     setTimeout(() => {
-                        currentPageElement.classList.remove('exit');
+                        // Reset current page
+                        currentPageElement.classList.remove('exit-left', 'exit-right');
+                        
+                        // Enter next page
                         nextPageElement.classList.add('active');
                         
-                        // Remove transition overlay
                         setTimeout(() => {
                             transitionOverlay.classList.remove('active');
+                            this.isTransitioning = false;
                         }, 500);
-                    }, 100);
-                }, 750);
+                    }, 200);
+                }, 1000);
             }
 
             addVisibilityListener() {
-                // Pause animation when tab is not visible
                 document.addEventListener('visibilitychange', () => {
                     if (document.hidden) {
                         clearInterval(this.rotationInterval);
@@ -381,56 +764,121 @@
                     }
                 });
             }
-        }
 
-        // Initialize the animated poster when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            new AnimatedPoster();
-        });
-
-        // Add some interactive sparkle effects
-        function createSparkle() {
-            const sparkle = document.createElement('div');
-            sparkle.style.position = 'fixed';
-            sparkle.style.width = '4px';
-            sparkle.style.height = '4px';
-            sparkle.style.background = '#FFD700';
-            sparkle.style.borderRadius = '50%';
-            sparkle.style.pointerEvents = 'none';
-            sparkle.style.zIndex = '999';
-            sparkle.style.left = Math.random() * window.innerWidth + 'px';
-            sparkle.style.top = Math.random() * window.innerHeight + 'px';
-            sparkle.style.animation = 'sparkleFloat 3s ease-out forwards';
-            
-            document.body.appendChild(sparkle);
-            
-            setTimeout(() => {
-                sparkle.remove();
-            }, 3000);
-        }
-
-        // Add sparkle animation
-        const sparkleStyle = document.createElement('style');
-        sparkleStyle.textContent = `
-            @keyframes sparkleFloat {
-                0% {
-                    opacity: 1;
-                    transform: translateY(0) scale(0);
-                }
-                50% {
-                    opacity: 1;
-                    transform: translateY(-50px) scale(1);
-                }
-                100% {
-                    opacity: 0;
-                    transform: translateY(-100px) scale(0);
-                }
+            addInteractiveEffects() {
+                // Add hover effects to collection items
+                const collectionItems = document.querySelectorAll('.collection-item');
+                
+                collectionItems.forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        this.createRippleEffect(item);
+                    });
+                });
             }
-        `;
-        document.head.appendChild(sparkleStyle);
 
-        // Create sparkles periodically
-        setInterval(createSparkle, 2000);
+            createRippleEffect(element) {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 215, 0, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = '50%';
+                ripple.style.top = '50%';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.marginLeft = '-10px';
+                ripple.style.marginTop = '-10px';
+                
+                element.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+        }
+
+        // Advanced sparkle system
+        class SparkleSystem {
+            constructor() {
+                this.sparkles = [];
+                this.init();
+            }
+
+            init() {
+                setInterval(() => this.createSparkle(), 800);
+                this.addSparkleStyles();
+            }
+
+            createSparkle() {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'advanced-sparkle';
+                
+                const size = Math.random() * 6 + 2;
+                sparkle.style.width = size + 'px';
+                sparkle.style.height = size + 'px';
+                sparkle.style.left = Math.random() * window.innerWidth + 'px';
+                sparkle.style.top = Math.random() * window.innerHeight + 'px';
+                
+                const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'];
+                sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                document.body.appendChild(sparkle);
+                this.sparkles.push(sparkle);
+                
+                setTimeout(() => {
+                    sparkle.remove();
+                    this.sparkles = this.sparkles.filter(s => s !== sparkle);
+                }, 4000);
+            }
+
+            addSparkleStyles() {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .advanced-sparkle {
+                        position: fixed;
+                        border-radius: 50%;
+                        pointer-events: none;
+                        z-index: 999;
+                        animation: advancedSparkle 4s ease-out forwards;
+                        box-shadow: 0 0 10px currentColor;
+                    }
+                    
+                    @keyframes advancedSparkle {
+                        0% {
+                            opacity: 1;
+                            transform: translateY(0) scale(0) rotate(0deg);
+                        }
+                        25% {
+                            opacity: 1;
+                            transform: translateY(-30px) scale(1) rotate(90deg);
+                        }
+                        75% {
+                            opacity: 0.8;
+                            transform: translateY(-80px) scale(0.8) rotate(270deg);
+                        }
+                        100% {
+                            opacity: 0;
+                            transform: translateY(-120px) scale(0) rotate(360deg);
+                        }
+                    }
+                    
+                    @keyframes ripple {
+                        to {
+                            transform: scale(4);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new UltraDynamicPoster();
+            new SparkleSystem();
+        });
     </script>
 </body>
 </html>
