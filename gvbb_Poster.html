@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXE - Animated Fashion Poster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .poster-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+        }
+
+        /* Background Video Effect */
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                linear-gradient(45deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+            animation: bgShimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes bgShimmer {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Page Styles */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .page.exit {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        /* Hero Page */
+        .hero-page {
+            text-align: center;
+            color: white;
+        }
+
+        .hero-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            background: linear-gradient(135deg, #FFD700 0%, #FFF 50%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            animation: logoGlow 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .hero-logo::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: haloEffect 4s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.4); }
+        }
+
+        @keyframes haloEffect {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .hero-tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            animation: fadeInUp 2s ease-out 0.5s both;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            font-weight: 400;
+            color: rgba(255, 215, 0, 0.8);
+            letter-spacing: 0.2em;
+            animation: fadeInUp 2s ease-out 1s both;
+        }
+
+        /* Content Page */
+        .content-page {
+            padding: 2rem;
+            color: white;
+        }
+
+        .content-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #FFD700 0%, #FFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInFromTop 1.5s ease-out;
+        }
+
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .collection-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideInUp 1s ease-out forwards;
+        }
+
+        .collection-item:nth-child(1) { animation-delay: 0.2s; }
+        .collection-item:nth-child(2) { animation-delay: 0.4s; }
+        .collection-item:nth-child(3) { animation-delay: 0.6s; }
+        .collection-item:nth-child(4) { animation-delay: 0.8s; }
+
+        .collection-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .collection-item:nth-child(even) .collection-icon {
+            animation-delay: -1.5s;
+        }
+
+        .collection-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #FFD700;
+        }
+
+        .collection-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .collections-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .content-page {
+                padding: 1rem;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .hero-logo {
+                font-size: clamp(3rem, 15vw, 6rem);
+            }
+            
+            .collections-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cinematic Transition Effects */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255, 215, 0, 0.1) 50%, transparent 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .transition-overlay.active {
+            animation: sweepTransition 1.5s ease-in-out;
+        }
+
+        @keyframes sweepTransition {
+            0% { opacity: 0; transform: translateX(-100%); }
+            50% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster-container">
+        <div class="bg-overlay"></div>
+        <div class="transition-overlay"></div>
+        
+        <!-- Hero Page -->
+        <div class="page hero-page active" id="heroPage">
+            <div class="hero-logo">LUXE</div>
+            <div class="hero-tagline">HAUTE COUTURE</div>
+            <div class="hero-subtitle">TIMELESS ELEGANCE</div>
+        </div>
+        
+        <!-- Content Page -->
+        <div class="page content-page" id="contentPage">
+            <h2 class="content-title">COLLECTIONS</h2>
+            <div class="collections-grid">
+                <div class="collection-item">
+                    <span class="collection-icon">👗</span>
+                    <h3 class="collection-name">Evening Wear</h3>
+                    <p class="collection-desc">Exquisite gowns and cocktail dresses crafted for unforgettable moments</p>
+                </div>
+                <div class="collection-item">
+                    <span class="collection-icon">👔</span>
+                    <h3 class="collection-name">Business Elite</h3>
+                    <p class="collection-desc">Sophisticated suits and professional attire for the modern executive</p>
+                </div>
+                <div class="collection-item">
+                    <span class="collection-icon">👜</span>
+                    <h3 class="collection-name">Accessories</h3>
+                    <p class="collection-desc">Luxury handbags, jewelry, and accessories to complete your look</p>
+                </div>
+                <div class="collection-item">
+                    <span class="collection-icon">👠</span>
+                    <h3 class="collection-name">Footwear</h3>
+                    <p class="collection-desc">Designer shoes and boots crafted with premium materials</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class AnimatedPoster {
+            constructor() {
+                this.currentPage = 0;
+                this.pages = ['heroPage', 'contentPage'];
+                this.transitionDuration = 5000; // 5 seconds
+                this.init();
+            }
+
+            init() {
+                this.startAutoRotation();
+                this.addVisibilityListener();
+            }
+
+            startAutoRotation() {
+                this.rotationInterval = setInterval(() => {
+                    this.nextPage();
+                }, this.transitionDuration);
+            }
+
+            nextPage() {
+                const currentPageElement = document.getElementById(this.pages[this.currentPage]);
+                const transitionOverlay = document.querySelector('.transition-overlay');
+                
+                // Add transition overlay effect
+                transitionOverlay.classList.add('active');
+                
+                // Start page transition after a short delay
+                setTimeout(() => {
+                    currentPageElement.classList.remove('active');
+                    currentPageElement.classList.add('exit');
+                    
+                    // Move to next page
+                    this.currentPage = (this.currentPage + 1) % this.pages.length;
+                    const nextPageElement = document.getElementById(this.pages[this.currentPage]);
+                    
+                    setTimeout(() => {
+                        currentPageElement.classList.remove('exit');
+                        nextPageElement.classList.add('active');
+                        
+                        // Remove transition overlay
+                        setTimeout(() => {
+                            transitionOverlay.classList.remove('active');
+                        }, 500);
+                    }, 100);
+                }, 750);
+            }
+
+            addVisibilityListener() {
+                // Pause animation when tab is not visible
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        clearInterval(this.rotationInterval);
+                    } else {
+                        this.startAutoRotation();
+                    }
+                });
+            }
+        }
+
+        // Initialize the animated poster when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new AnimatedPoster();
+        });
+
+        // Add some interactive sparkle effects
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.width = '4px';
+            sparkle.style.height = '4px';
+            sparkle.style.background = '#FFD700';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '999';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.animation = 'sparkleFloat 3s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 3000);
+        }
+
+        // Add sparkle animation
+        const sparkleStyle = document.createElement('style');
+        sparkleStyle.textContent = `
+            @keyframes sparkleFloat {
+                0% {
+                    opacity: 1;
+                    transform: translateY(0) scale(0);
+                }
+                50% {
+                    opacity: 1;
+                    transform: translateY(-50px) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-100px) scale(0);
+                }
+            }
+        `;
+        document.head.appendChild(sparkleStyle);
+
+        // Create sparkles periodically
+        setInterval(createSparkle, 2000);
+    </script>
+</body>
+</html>
